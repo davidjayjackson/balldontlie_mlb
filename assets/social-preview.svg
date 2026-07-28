@@ -1,0 +1,81 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182848"/>
+      <stop offset="100%" stop-color="#0F1A30"/>
+    </linearGradient>
+    <radialGradient id="ball" cx="35%" cy="32%" r="75%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="45%" stop-color="#F1ECDF"/>
+      <stop offset="100%" stop-color="#C9BEA8"/>
+    </radialGradient>
+    <radialGradient id="shine" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+    <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.05"/>
+    </pattern>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect width="1280" height="640" fill="url(#gridPattern)"/>
+
+  <!-- baseball, r=120 centered at (640,180) -->
+  <g filter="url(#softShadow)">
+    <circle cx="640" cy="180" r="120" fill="url(#ball)" stroke="#D8D2C4" stroke-width="5"/>
+    <path d="M608 68 C534 122 534 238 608 292" stroke="#C8102E" stroke-width="5" fill="none"/>
+    <path d="M672 68 C746 122 746 238 672 292" stroke="#C8102E" stroke-width="5" fill="none"/>
+    <g fill="#C8102E">
+      <circle cx="571" cy="105" r="3.2"/>
+      <circle cx="555" cy="142" r="3.2"/>
+      <circle cx="549" cy="180" r="3.2"/>
+      <circle cx="555" cy="218" r="3.2"/>
+      <circle cx="571" cy="255" r="3.2"/>
+      <circle cx="709" cy="105" r="3.2"/>
+      <circle cx="725" cy="142" r="3.2"/>
+      <circle cx="731" cy="180" r="3.2"/>
+      <circle cx="725" cy="218" r="3.2"/>
+      <circle cx="709" cy="255" r="3.2"/>
+    </g>
+    <ellipse cx="602" cy="146" rx="55" ry="40" fill="url(#shine)"/>
+  </g>
+
+  <!-- spreadsheet badge, anchored into the ball's lower-right edge -->
+  <g filter="url(#softShadow)">
+    <rect x="668" y="208" width="118" height="118" rx="21" fill="#F5F7FA" stroke="#0F1A30" stroke-width="5"/>
+    <g stroke="#93A1B8" stroke-width="3">
+      <path d="M668 247 H786"/>
+      <path d="M668 286 H786"/>
+      <path d="M707 208 V326"/>
+      <path d="M747 208 V326"/>
+    </g>
+    <rect x="707" y="247" width="40" height="39" fill="#C8102E" opacity="0.92"/>
+  </g>
+
+  <!-- title block, centered -->
+  <g font-family="Liberation Sans, Arial, sans-serif" text-anchor="middle">
+    <text x="640" y="410" font-size="54" font-weight="700" fill="#F5F7FA">balldontlie MLB Calc Add-In</text>
+    <text x="640" y="448" font-size="23" fill="#A9B4C7">MLB teams, games, standings &amp; player stats as LibreOffice Calc formulas</text>
+  </g>
+
+  <!-- formula chips, centered row -->
+  <g font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="18">
+    <rect x="227" y="470" width="160" height="40" rx="20" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.85"/>
+    <text x="307" y="496" fill="#FFC9C9" text-anchor="middle">MLBGAMES()</text>
+
+    <rect x="401" y="470" width="208" height="40" rx="20" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.85"/>
+    <text x="505" y="496" fill="#FFC9C9" text-anchor="middle">MLBSTANDINGS()</text>
+
+    <rect x="623" y="470" width="160" height="40" rx="20" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.85"/>
+    <text x="703" y="496" fill="#FFC9C9" text-anchor="middle">MLBTEAMS()</text>
+
+    <rect x="797" y="470" width="256" height="40" rx="20" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.85"/>
+    <text x="925" y="496" fill="#FFC9C9" text-anchor="middle">MLBPLAYERSEARCH()</text>
+  </g>
+
+  <text x="640" y="560" font-family="Liberation Sans, Arial, sans-serif" font-size="16" fill="#6E7A90" text-anchor="middle">Java 8 &#183; zero dependencies &#183; MIT licensed</text>
+</svg>

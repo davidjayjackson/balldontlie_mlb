@@ -1,0 +1,86 @@
+<svg width="1200" height="300" viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#182848"/>
+      <stop offset="100%" stop-color="#0F1A30"/>
+    </linearGradient>
+    <radialGradient id="ball" cx="35%" cy="32%" r="75%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="45%" stop-color="#F1ECDF"/>
+      <stop offset="100%" stop-color="#C9BEA8"/>
+    </radialGradient>
+    <radialGradient id="shine" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0 H0 V40" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.05"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  <rect width="1200" height="300" fill="url(#gridPattern)"/>
+
+  <!-- baseball + spreadsheet badge, scaled down -->
+  <g transform="translate(60,54) scale(0.62)">
+    <g filter="url(#softShadow)">
+      <circle cx="248" cy="256" r="152" fill="url(#ball)" stroke="#D8D2C4" stroke-width="6"/>
+      <path d="M208 108 C118 176 118 336 208 404" stroke="#C8102E" stroke-width="6" fill="none"/>
+      <path d="M288 108 C378 176 378 336 288 404" stroke="#C8102E" stroke-width="6" fill="none"/>
+      <g fill="#C8102E">
+        <circle cx="160" cy="158" r="4"/>
+        <circle cx="140" cy="205" r="4"/>
+        <circle cx="133" cy="256" r="4"/>
+        <circle cx="140" cy="307" r="4"/>
+        <circle cx="160" cy="354" r="4"/>
+        <circle cx="336" cy="158" r="4"/>
+        <circle cx="356" cy="205" r="4"/>
+        <circle cx="363" cy="256" r="4"/>
+        <circle cx="356" cy="307" r="4"/>
+        <circle cx="336" cy="354" r="4"/>
+      </g>
+      <ellipse cx="200" cy="200" rx="70" ry="50" fill="url(#shine)"/>
+    </g>
+    <g filter="url(#softShadow)">
+      <rect x="286" y="294" width="150" height="150" rx="26" fill="#F5F7FA" stroke="#0F1A30" stroke-width="6"/>
+      <g stroke="#93A1B8" stroke-width="4">
+        <path d="M286 344 H436"/>
+        <path d="M286 394 H436"/>
+        <path d="M336 294 V444"/>
+        <path d="M386 294 V444"/>
+      </g>
+      <rect x="336" y="344" width="50" height="50" fill="#C8102E" opacity="0.92"/>
+    </g>
+  </g>
+
+  <!-- title block -->
+  <g font-family="Liberation Sans, Arial, sans-serif">
+    <text x="330" y="118" font-size="46" font-weight="700" fill="#F5F7FA">balldontlie MLB Calc Add-In</text>
+    <text x="332" y="154" font-size="21" fill="#A9B4C7">MLB teams, games, standings &amp; player stats as LibreOffice Calc formulas</text>
+  </g>
+
+  <!-- formula chips -->
+  <g font-family="Liberation Mono, DejaVu Sans Mono, monospace" font-size="17">
+    <g>
+      <rect x="332" y="182" width="160" height="40" rx="20" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.85"/>
+      <text x="352" y="208" fill="#FFC9C9">MLBGAMES()</text>
+    </g>
+    <g>
+      <rect x="506" y="182" width="208" height="40" rx="20" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.85"/>
+      <text x="526" y="208" fill="#FFC9C9">MLBSTANDINGS()</text>
+    </g>
+    <g>
+      <rect x="728" y="182" width="160" height="40" rx="20" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.85"/>
+      <text x="748" y="208" fill="#FFC9C9">MLBTEAMS()</text>
+    </g>
+    <g>
+      <rect x="902" y="182" width="256" height="40" rx="20" fill="none" stroke="#C8102E" stroke-width="1.5" opacity="0.85"/>
+      <text x="922" y="208" fill="#FFC9C9">MLBPLAYERSEARCH()</text>
+    </g>
+  </g>
+
+  <text x="332" y="252" font-family="Liberation Sans, Arial, sans-serif" font-size="15" fill="#6E7A90">Java 8 &#183; zero dependencies &#183; MIT licensed</text>
+</svg>

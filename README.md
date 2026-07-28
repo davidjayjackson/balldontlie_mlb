@@ -1,8 +1,16 @@
+<p align="center">
+  <img src="assets/banner.png" alt="balldontlie MLB Calc Add-In" width="100%">
+</p>
+
 # balldontlie MLB Calc Add-In
 
 A LibreOffice Calc add-in (UNO component, **Java**, MIT licensed) exposing
 MLB teams, players, games, standings, and player statistics from the
 [balldontlie](https://www.balldontlie.io/) API as worksheet functions.
+
+> New here? [docs/TUTORIAL.md](docs/TUTORIAL.md) is a step-by-step
+> walkthrough — install, configure your API key, and build a working
+> team + player dashboard. This README is the function reference.
 
 | Function | Signature | Returns |
 |----------|-----------|---------|
@@ -200,6 +208,16 @@ the environment-variable route).
   row of a table-returning function, select the output range and enter it as
   an **array formula** (Ctrl+Shift+Enter, or tick **Array** in the Function
   Wizard). A plain single-cell entry shows only the top-left value.
+- **Looking up values inside an array-formula result.** LibreOffice can't
+  run `MATCH`/`COUNTIF`/`VLOOKUP` *directly* against a range that is itself
+  the live output of another array formula from a UNO add-in — it returns
+  `#N/A`/`0` even though the individual cell values are correct (confirmed
+  with `EXACT()` on a single cell). If you need to look something up inside
+  an `MLBTEAMS()`/`MLBGAMES()`/etc. spill, copy the range and **Paste
+  Special → Values Only** into a plain range first, then `MATCH` against
+  that copy. (`tools/build_demo.py`, which builds `test/mlb_demo.ods`, hits
+  this too — it works around it by resolving the row in Python and writing
+  a plain cell reference instead of a live `MATCH` formula.)
 - **`MLBGAMES` team filter.** The optional `team_id` argument takes a
   *numeric* team id (from `MLBTEAM`/`MLBTEAMS`), not an abbreviation, and is
   applied server-side (`team_ids[]=`) in both date mode and season mode.
