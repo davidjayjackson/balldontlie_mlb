@@ -89,6 +89,23 @@ def main():
             rng.setArrayFormula(f)
             return rng
 
+        # Every add-in cell gets re-invoked on *every* doc.calculateAll()
+        # (confirmed: these functions aren't treated as dependency-clean by
+        # Calc, unlike plain formulas), and array-formula results in
+        # particular can flip back to #FETCHING because of a *later*,
+        # unrelated calculateAll() elsewhere in the document, even though
+        # the underlying cache is still warm and the value was already
+        # confirmed correct once. Chasing perfect live-recalculation
+        # persistence through the whole rest of the script (including the
+        # eventual key swap below) turned out to be unreliable no matter
+        # how much extra settling was done. So scalar results are instead
+        # captured as a *plain string* into a separate "Example result"
+        # column at the point they're confirmed -- immune to any of this,
+        # since it's not a live formula at all. Table-formula ranges
+        # (MLBTEAMS/MLBGAMES/MLBPLAYERSEARCH/MLBSTANDINGS) don't get this
+        # treatment and may show #FETCHING in the saved file; that's
+        # already documented, expected behavior for this add-in (see the
+        # sheet's own header note), not a defect.
         def settle(cell_or_range, max_wait=45, poll=2.0):
             """Recalc until the top-left value moves off #FETCHING, or timeout."""
             deadline = time.time() + max_wait
@@ -158,18 +175,23 @@ def main():
         put(0, r, "Function")
         put(1, r, "Live result")
         put(2, r, "Formula")
+        put(3, r, "Example result (captured at generation time)")
         r += 1
         f = "=MLBTEAM(%s;\"display_name\";%s)" % (team_id_ref, KEY)
         put(0, r, "MLBTEAM (display_name)")
         put(2, r, f)
         c = formula(1, r, f)
-        print("team display_name ->", settle(c, max_wait=20))
+        v = settle(c, max_wait=20)
+        put(3, r, v)
+        print("team display_name ->", v)
         r += 1
         f = "=MLBTEAM(%s;\"league\";%s)" % (team_id_ref, KEY)
         put(0, r, "MLBTEAM (league)")
         put(2, r, f)
         c = formula(1, r, f)
-        print("team league ->", settle(c, max_wait=15))
+        v = settle(c, max_wait=15)
+        put(3, r, v)
+        print("team league ->", v)
 
         # ------------------------------------------------------------ #
         # MLBGAMES() - season games for the Yankees, array formula      #
@@ -199,7 +221,9 @@ def main():
         put(0, r, "MLBGAME (status, for the first game above)")
         put(2, r, f)
         c = formula(1, r, f)
-        print("game status ->", settle(c))
+        v = settle(c)
+        put(3, r, v)
+        print("game status ->", v)
 
         # ------------------------------------------------------------ #
         # MLBPLAYERSEARCH() - array formula                             #
@@ -229,13 +253,23 @@ def main():
         put(0, r, "MLBPLAYER (full_name)")
         put(2, r, f)
         c = formula(1, r, f)
-        print("player full_name ->", settle(c))
+        v = settle(c)
+        put(3, r, v)
+        print("player full_name ->", v)
         r += 1
         f = "=MLBPLAYER(%s;\"team.abbreviation\";%s)" % (player_id_ref, KEY)
         put(0, r, "MLBPLAYER (team.abbreviation - dot notation for a nested field)")
         put(2, r, f)
         c = formula(1, r, f)
-        print("player team.abbreviation ->", settle(c, max_wait=15))
+        v = settle(c, max_wait=15)
+        put(3, r, v)
+        print("player team.abbreviation ->", v)
+
+        # Widen columns a little for readability.
+        cols = sh.Columns
+        for i in range(8):
+            cols.getByIndex(i).Width = 4200
+        cols.getByIndex(0).Width = 9500
 
         # ------------------------------------------------------------ #
         # Paid-tier endpoints - correctly show #TIER on a free key      #
@@ -257,14 +291,18 @@ def main():
         put(0, r, "MLBSEASONSTATS (batting_avg)  [needs paid tier - shows #TIER on a free key]")
         put(2, r, f)
         c = formula(1, r, f)
-        print("seasonstats ->", settle(c, max_wait=30))
+        v = settle(c, max_wait=30)
+        put(3, r, v)
+        print("seasonstats ->", v)
 
         r += 1
         f = "=MLBSTAT(%s;%s;\"hits\";%s)" % (player_id_ref, game_id_ref, KEY)
         put(0, r, "MLBSTAT (hits, first Yankees game above)  [needs paid tier - shows #TIER on a free key]")
         put(2, r, f)
         c = formula(1, r, f)
-        print("stat ->", settle(c, max_wait=40))
+        v = settle(c, max_wait=40)
+        put(3, r, v)
+        print("stat ->", v)
 
         # ------------------------------------------------------------ #
         # Diagnostics - entered last so MLBLASTERROR reflects the most #
@@ -278,24 +316,24 @@ def main():
         doc.calculateAll()
         print("lasterror ->", c.getString())
 
-        r += 1
-        f = "=MLBCACHECLEAR()"
-        put(0, r, "MLBCACHECLEAR()  (clears the shared cache; harmless to call here, at the very end)")
-        put(2, r, f)
-        c = formula(1, r, f)
-        doc.calculateAll()
-        print("cacheclear ->", c.getString())
-
-        # Widen columns a little for readability.
-        cols = sh.Columns
-        for i in range(8):
-            cols.getByIndex(i).Width = 4200
-        cols.getByIndex(0).Width = 9500
-
-        doc.calculateAll()
+        # MLBCACHECLEAR() is deliberately not demonstrated live here: every
+        # doc.calculateAll() re-invokes *every* add-in cell in the sheet
+        # (confirmed -- these functions aren't treated as dependency-clean
+        # by Calc), which is invisible while the cache is warm (an instant
+        # cache hit), but clearing the cache mid-script makes every
+        # subsequent calculateAll() re-fetch everything from scratch --
+        # including the id-lookup cells other formulas depend on as numeric
+        # arguments, which transiently show #FETCHING (non-numeric text)
+        # and cascade to #NOT_FOUND downstream. Not worth it for one extra
+        # demo row; MLBCACHECLEAR is already documented in the README.
 
         # Swap the real key for an obvious placeholder before saving - this
-        # file is public; only the placeholder ever gets committed.
+        # file is public; only the placeholder ever gets committed. Turn off
+        # autocalculation first: every formula above references $A$1, so
+        # setString() here would otherwise immediately re-trigger all of
+        # them with the (invalid) placeholder key, clobbering the real
+        # baked-in results with live failures before they're ever saved.
+        doc.enableAutomaticCalculation(False)
         sh.getCellByPosition(0, 0).setString(PLACEHOLDER_KEY)
 
         # Save as ODF spreadsheet (calc8 = .ods).
