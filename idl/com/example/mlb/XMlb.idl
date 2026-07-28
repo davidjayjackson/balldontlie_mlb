@@ -1,0 +1,224 @@
+#include <com/sun/star/uno/XInterface.idl>
+
+module com { module example { module mlb {
+
+    /** Add-in interface exposing balldontlie MLB data as LibreOffice Calc
+        worksheet functions.
+
+        Cell functions in this add-in never block on network I/O and never
+        throw. Every function resolves against a shared, TTL'd, background-
+        refreshed cache and returns one of:
+        <ul>
+          <li>the requested value (fresh or last-known-good cached data), or</li>
+          <li>"#FETCHING" - first request for this data; a background fetch
+              was just started. Recalculate (F9 / Ctrl+Shift+F9) once it
+              completes.</li>
+          <li>"#NO_API_KEY" - no balldontlie API key could be resolved. See
+              MLB_LASTERROR and the README for the key-resolution order.</li>
+          <li>"#NOT_FOUND" - the request was well-formed and reached the API,
+              but no matching data exists (unknown id, empty search, etc).</li>
+          <li>"#TIER" - the endpoint (standings, season stats, per-game
+              stats) requires a balldontlie plan above the free tier.</li>
+          <li>"#RATE_LIMIT" - the free tier's request-per-minute limit was
+              hit. The add-in does not retry-storm; it backs off and retries
+              automatically on a later recalculation.</li>
+          <li>"#ERR" - the fetch failed persistently (network, bad response).
+              Call MLB_LASTERROR() for detail.</li>
+        </ul>
+
+        Every function that talks to the API takes a trailing optional
+        <em>apiKey</em> argument (typed literally or via a cell reference).
+        When supplied, it overrides the environment for that call; when
+        omitted, the key falls back to the balldontlie.api.key system
+        property, then the BALLDONTLIE_API_KEY environment variable, then
+        ~/.config/libreoffice-mlb/balldontlie.properties. Cell functions
+        never contain the key as a bare literal by default -- passing it as
+        an argument is opt-in.
+
+        Table-returning functions return a matrix (sequence of sequences);
+        LibreOffice has no dynamic spill, so select the output range and
+        enter the formula as an array formula (Ctrl+Shift+Enter) to see every
+        row. A plain single-cell entry shows only the top-left cell.
+
+        Scalar field-lookup functions (MLBTEAM, MLBPLAYER, MLBGAME,
+        MLBSEASONSTATS, MLBSTAT) take a <em>field</em> argument naming the
+        exact balldontlie JSON key to return (see the README's field-name
+        reference); nested fields are addressed with dot notation, e.g.
+        "home_team_data.runs" or "team.abbreviation". */
+    interface XMlb
+    {
+        interface ::com::sun::star::uno::XInterface;
+
+        /** List MLB teams, optionally filtered.
+
+            @param league optional. "American" or "National" to filter to
+                one league. Declared as <em>any</em> so it may be omitted.
+            @param division optional. "East", "Central", or "West" to filter
+                to one division. Declared as <em>any</em> so it may be
+                omitted.
+            @param apiKey optional. Overrides the environment's balldontlie
+                API key for this call. Declared as <em>any</em> so it may be
+                omitted.
+            @returns a matrix of rows: id, abbreviation, display_name,
+                location, league, division.
+         */
+        sequence< sequence< any > > mlbTeams(
+            [in] any league,
+            [in] any division,
+            [in] any apiKey );
+
+        /** Scalar lookup of one field on one team.
+
+            @param teamId numeric team id (from MLBTEAMS). Declared as
+                <em>any</em> so a cell reference may supply it.
+            @param field the exact balldontlie JSON key to return, e.g.
+                "abbreviation" or "display_name".
+            @param apiKey optional. Overrides the environment's balldontlie
+                API key for this call. Declared as <em>any</em> so it may be
+                omitted.
+            @returns the requested field's value, or a sentinel string.
+         */
+        any mlbTeam(
+            [in] any teamId,
+            [in] string field,
+            [in] any apiKey );
+
+        /** Search players by name.
+
+            @param searchText a full or partial player name.
+            @param maxRows optional. Caps the number of rows returned
+                (default 100). Declared as <em>any</em> so it may be omitted.
+            @param apiKey optional. Overrides the environment's balldontlie
+                API key for this call. Declared as <em>any</em> so it may be
+                omitted.
+            @returns a matrix of rows: id, full_name, position, team
+                (abbreviation), active.
+         */
+        sequence< sequence< any > > mlbPlayerSearch(
+            [in] string searchText,
+            [in] any maxRows,
+            [in] any apiKey );
+
+        /** Scalar lookup of one field on one player.
+
+            @param playerId numeric player id (from MLBPLAYERSEARCH).
+                Declared as <em>any</em> so a cell reference may supply it.
+            @param field the exact balldontlie JSON key to return, e.g.
+                "full_name" or "team.abbreviation" (dot notation for nested
+                fields).
+            @param apiKey optional. Overrides the environment's balldontlie
+                API key for this call. Declared as <em>any</em> so it may be
+                omitted.
+            @returns the requested field's value, or a sentinel string.
+         */
+        any mlbPlayer(
+            [in] any playerId,
+            [in] string field,
+            [in] any apiKey );
+
+        /** List games for a date or a season.
+
+            @param dateOrSeason either an ISO date "YYYY-MM-DD" (games on
+                that date) or a 4-digit season year "YYYY" (games in that
+                season).
+            @param teamId optional. A numeric team id (from MLBTEAM) to
+                filter to, honored in both date and season mode. Declared as
+                <em>any</em> so it may be omitted.
+            @param maxRows optional. Caps the number of rows returned.
+                Declared as <em>any</em> so it may be omitted.
+            @param apiKey optional. Overrides the environment's balldontlie
+                API key for this call. Declared as <em>any</em> so it may be
+                omitted.
+            @returns a matrix of rows: id, date, away_team_name, away_runs,
+                home_team_name, home_runs, status, season_type.
+         */
+        sequence< sequence< any > > mlbGames(
+            [in] string dateOrSeason,
+            [in] any teamId,
+            [in] any maxRows,
+            [in] any apiKey );
+
+        /** Scalar lookup of one field on one game.
+
+            @param gameId numeric game id (from MLBGAMES). Declared as
+                <em>any</em> so a cell reference may supply it.
+            @param field the exact balldontlie JSON key to return, e.g.
+                "status" or "home_team_data.runs" (dot notation for nested
+                fields).
+            @param apiKey optional. Overrides the environment's balldontlie
+                API key for this call. Declared as <em>any</em> so it may be
+                omitted.
+            @returns the requested field's value, or a sentinel string.
+         */
+        any mlbGame(
+            [in] any gameId,
+            [in] string field,
+            [in] any apiKey );
+
+        /** League standings for a season. Requires a balldontlie plan above
+            the free tier; returns "#TIER" on a free-tier key.
+
+            @param season 4-digit season year, e.g. "2024".
+            @param apiKey optional. Overrides the environment's balldontlie
+                API key for this call. Declared as <em>any</em> so it may be
+                omitted.
+            @returns a matrix of rows: team (abbreviation), league, division,
+                wins, losses, win_percent, games_behind, run_differential.
+         */
+        sequence< sequence< any > > mlbStandings(
+            [in] string season,
+            [in] any apiKey );
+
+        /** A player's season-stat field. Requires a balldontlie plan above
+            the free tier; returns "#TIER" on a free-tier key.
+
+            @param playerId numeric player id (from MLBPLAYERSEARCH).
+                Declared as <em>any</em> so a cell reference may supply it.
+            @param season 4-digit season year, e.g. "2024".
+            @param field the exact balldontlie JSON key to return, e.g.
+                "batting_avg", "pitching_era", "fielding_fp".
+            @param apiKey optional. Overrides the environment's balldontlie
+                API key for this call. Declared as <em>any</em> so it may be
+                omitted.
+            @returns the requested field's value, or a sentinel string.
+         */
+        any mlbSeasonStats(
+            [in] any playerId,
+            [in] string season,
+            [in] string field,
+            [in] any apiKey );
+
+        /** A player's single-game stat-line field. Requires a balldontlie
+            plan above the free tier; returns "#TIER" on a free-tier key.
+
+            @param playerId numeric player id (from MLBPLAYERSEARCH).
+                Declared as <em>any</em> so a cell reference may supply it.
+            @param gameId numeric game id (from MLBGAMES). Declared as
+                <em>any</em> so a cell reference may supply it.
+            @param field the exact balldontlie JSON key to return from the
+                player's stat line for that game.
+            @param apiKey optional. Overrides the environment's balldontlie
+                API key for this call. Declared as <em>any</em> so it may be
+                omitted.
+            @returns the requested field's value, or a sentinel string.
+         */
+        any mlbStat(
+            [in] any playerId,
+            [in] any gameId,
+            [in] string field,
+            [in] any apiKey );
+
+        /** The most recent fetch error message, for diagnostics.
+
+            @returns the last error message, or an empty string if none.
+         */
+        string mlbLastError();
+
+        /** Clear every cached response.
+
+            @returns the number of cache entries cleared.
+         */
+        double mlbCacheClear();
+    };
+
+}; }; };

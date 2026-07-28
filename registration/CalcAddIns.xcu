@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oor:component-data
+    xmlns:oor="http://openoffice.org/2001/registry"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    oor:name="CalcAddIns" oor:package="org.openoffice.Office">
+  <node oor:name="AddInInfo">
+    <node oor:name="com.example.mlb.MlbImpl" oor:op="replace">
+      <node oor:name="AddInFunctions">
+
+        <!-- =MLBTEAMS([league]; [division]; [api_key]) -->
+        <node oor:name="mlbTeams" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBTEAMS</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Lists MLB teams, optionally filtered by league and/or division, as a spillable array (id, abbreviation, display_name, location, league, division). Enter as an array formula (Ctrl+Shift+Enter) to see all rows.</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBTEAMS</value></prop>
+          <node oor:name="Parameters">
+            <node oor:name="league" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">league</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Optional. "American" or "National" to filter to one league.</value></prop>
+            </node>
+            <node oor:name="division" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">division</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Optional. "East", "Central", or "West" to filter to one division.</value></prop>
+            </node>
+            <node oor:name="apiKey" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">api_key</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. balldontlie API key for this call; overrides the environment (system property, BALLDONTLIE_API_KEY, or properties file) when supplied. May reference a cell.</value>
+              </prop>
+            </node>
+          </node>
+        </node>
+
+        <!-- =MLBTEAM(team_id; field; [api_key]) -->
+        <node oor:name="mlbTeam" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBTEAM</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Scalar lookup of one field on one team, by numeric team id. Returns #FETCHING, #NO_API_KEY, or #NOT_FOUND if unresolved.</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBTEAM</value></prop>
+          <node oor:name="Parameters">
+            <node oor:name="teamId" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">team_id</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Numeric team id, from MLBTEAMS.</value></prop>
+            </node>
+            <node oor:name="field" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">field</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">The exact balldontlie JSON field to return, e.g. "abbreviation" or "display_name".</value></prop>
+            </node>
+            <node oor:name="apiKey" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">api_key</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. balldontlie API key for this call; overrides the environment (system property, BALLDONTLIE_API_KEY, or properties file) when supplied. May reference a cell.</value>
+              </prop>
+            </node>
+          </node>
+        </node>
+
+        <!-- =MLBPLAYERSEARCH(search_text; [max_rows]; [api_key]) -->
+        <node oor:name="mlbPlayerSearch" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBPLAYERSEARCH</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Searches players by name; returns a spillable array (id, full_name, position, team, active) of up to max_rows matches (default 100). Enter as an array formula.</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBPLAYERSEARCH</value></prop>
+          <node oor:name="Parameters">
+            <node oor:name="searchText" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">search_text</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">A full or partial player name.</value></prop>
+            </node>
+            <node oor:name="maxRows" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">max_rows</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Optional. Caps the number of rows returned (default 100).</value></prop>
+            </node>
+            <node oor:name="apiKey" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">api_key</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. balldontlie API key for this call; overrides the environment (system property, BALLDONTLIE_API_KEY, or properties file) when supplied. May reference a cell.</value>
+              </prop>
+            </node>
+          </node>
+        </node>
+
+        <!-- =MLBPLAYER(player_id; field; [api_key]) -->
+        <node oor:name="mlbPlayer" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBPLAYER</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Scalar lookup of one field on one player, by numeric player id. Returns #FETCHING, #NO_API_KEY, or #NOT_FOUND if unresolved.</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBPLAYER</value></prop>
+          <node oor:name="Parameters">
+            <node oor:name="playerId" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">player_id</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Numeric player id, from MLBPLAYERSEARCH.</value></prop>
+            </node>
+            <node oor:name="field" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">field</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">The exact balldontlie JSON field to return, e.g. "full_name" or "team.abbreviation" (dot notation for nested fields).</value></prop>
+            </node>
+            <node oor:name="apiKey" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">api_key</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. balldontlie API key for this call; overrides the environment (system property, BALLDONTLIE_API_KEY, or properties file) when supplied. May reference a cell.</value>
+              </prop>
+            </node>
+          </node>
+        </node>
+
+        <!-- =MLBGAMES(date_or_season; [team_id]; [max_rows]; [api_key]) -->
+        <node oor:name="mlbGames" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBGAMES</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Lists games for a date or a season, optionally filtered to one team, as a spillable array (id, date, away_team_name, away_runs, home_team_name, home_runs, status, season_type). Enter as an array formula.</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBGAMES</value></prop>
+          <node oor:name="Parameters">
+            <node oor:name="dateOrSeason" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">date_or_season</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">An ISO date "YYYY-MM-DD" (games on that date) or a 4-digit season year "YYYY" (games in that season).</value>
+              </prop>
+            </node>
+            <node oor:name="teamId" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">team_id</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. A numeric team id from MLBTEAM to filter to (honored in both date and season mode).</value>
+              </prop>
+            </node>
+            <node oor:name="maxRows" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">max_rows</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Optional. Caps the number of rows returned.</value></prop>
+            </node>
+            <node oor:name="apiKey" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">api_key</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. balldontlie API key for this call; overrides the environment (system property, BALLDONTLIE_API_KEY, or properties file) when supplied. May reference a cell.</value>
+              </prop>
+            </node>
+          </node>
+        </node>
+
+        <!-- =MLBGAME(game_id; field; [api_key]) -->
+        <node oor:name="mlbGame" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBGAME</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Scalar lookup of one field on one game, by numeric game id. Returns #FETCHING, #NO_API_KEY, or #NOT_FOUND if unresolved.</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBGAME</value></prop>
+          <node oor:name="Parameters">
+            <node oor:name="gameId" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">game_id</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Numeric game id, from MLBGAMES.</value></prop>
+            </node>
+            <node oor:name="field" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">field</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">The exact balldontlie JSON field to return, e.g. "status" or "home_team_data.runs" (dot notation for nested fields).</value></prop>
+            </node>
+            <node oor:name="apiKey" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">api_key</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. balldontlie API key for this call; overrides the environment (system property, BALLDONTLIE_API_KEY, or properties file) when supplied. May reference a cell.</value>
+              </prop>
+            </node>
+          </node>
+        </node>
+
+        <!-- =MLBSTANDINGS(season; [api_key]) -->
+        <node oor:name="mlbStandings" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBSTANDINGS</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Returns league standings for a season as a spillable array (team, league, division, wins, losses, win_percent, games_behind, run_differential). Requires a balldontlie plan above the free tier (returns #TIER otherwise). Enter as an array formula.</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBSTANDINGS</value></prop>
+          <node oor:name="Parameters">
+            <node oor:name="season" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">season</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">4-digit season year, e.g. "2024".</value></prop>
+            </node>
+            <node oor:name="apiKey" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">api_key</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. balldontlie API key for this call; overrides the environment (system property, BALLDONTLIE_API_KEY, or properties file) when supplied. May reference a cell.</value>
+              </prop>
+            </node>
+          </node>
+        </node>
+
+        <!-- =MLBSEASONSTATS(player_id; season; field; [api_key]) -->
+        <node oor:name="mlbSeasonStats" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBSEASONSTATS</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Scalar lookup of one season-stat field for a player (batting_*, pitching_*, fielding_* keys). Requires a balldontlie plan above the free tier (returns #TIER otherwise).</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBSEASONSTATS</value></prop>
+          <node oor:name="Parameters">
+            <node oor:name="playerId" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">player_id</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Numeric player id, from MLBPLAYERSEARCH.</value></prop>
+            </node>
+            <node oor:name="season" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">season</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">4-digit season year, e.g. "2024".</value></prop>
+            </node>
+            <node oor:name="field" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">field</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">The exact balldontlie JSON field to return, e.g. "batting_avg", "pitching_era", "fielding_fp".</value></prop>
+            </node>
+            <node oor:name="apiKey" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">api_key</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. balldontlie API key for this call; overrides the environment (system property, BALLDONTLIE_API_KEY, or properties file) when supplied. May reference a cell.</value>
+              </prop>
+            </node>
+          </node>
+        </node>
+
+        <!-- =MLBSTAT(player_id; game_id; field; [api_key]) -->
+        <node oor:name="mlbStat" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBSTAT</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Scalar lookup of one field from a player's single-game stat line. Requires a balldontlie plan above the free tier (returns #TIER otherwise).</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBSTAT</value></prop>
+          <node oor:name="Parameters">
+            <node oor:name="playerId" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">player_id</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Numeric player id, from MLBPLAYERSEARCH.</value></prop>
+            </node>
+            <node oor:name="gameId" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">game_id</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">Numeric game id, from MLBGAMES.</value></prop>
+            </node>
+            <node oor:name="field" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">field</value></prop>
+              <prop oor:name="Description"><value xml:lang="en">The exact balldontlie JSON field to return from that player's stat line for that game.</value></prop>
+            </node>
+            <node oor:name="apiKey" oor:op="replace">
+              <prop oor:name="DisplayName"><value xml:lang="en">api_key</value></prop>
+              <prop oor:name="Description">
+                <value xml:lang="en">Optional. balldontlie API key for this call; overrides the environment (system property, BALLDONTLIE_API_KEY, or properties file) when supplied. May reference a cell.</value>
+              </prop>
+            </node>
+          </node>
+        </node>
+
+        <!-- =MLBLASTERROR() -->
+        <node oor:name="mlbLastError" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBLASTERROR</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Returns the most recent fetch error message, for diagnostics. Empty string if no error has occurred.</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBLASTERROR</value></prop>
+        </node>
+
+        <!-- =MLBCACHECLEAR() -->
+        <node oor:name="mlbCacheClear" oor:op="replace">
+          <prop oor:name="DisplayName"><value xml:lang="en">MLBCACHECLEAR</value></prop>
+          <prop oor:name="Description">
+            <value xml:lang="en">Clears every cached response, forcing fresh fetches. Returns the number of cache entries cleared.</value>
+          </prop>
+          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="CompatibilityName"><value xml:lang="en">MLBCACHECLEAR</value></prop>
+        </node>
+
+      </node>
+    </node>
+  </node>
+</oor:component-data>
