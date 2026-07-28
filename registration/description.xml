@@ -3,7 +3,7 @@
     xmlns="http://openoffice.org/extensions/description/2006"
     xmlns:xlink="http://www.w3.org/1999/xlink">
   <identifier value="com.example.mlb"/>
-  <version value="1.0.0"/>
+  <version value="1.1.0"/>
   <display-name>
     <name lang="en">balldontlie MLB Calc Add-In</name>
   </display-name>
