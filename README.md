@@ -145,12 +145,15 @@ On the free tier, only `/mlb/v1/teams`, `/mlb/v1/players`, and
 
 ## Install (prebuilt)
 
-If you have a prebuilt `MLB.oxt`, install it directly — no build required:
+Download `MLB.oxt` from the [latest release](https://github.com/davidjayjackson/balldontlie_mlb/releases/latest)
+(currently [v1.0.0](https://github.com/davidjayjackson/balldontlie_mlb/releases/tag/v1.0.0),
+[direct link](https://github.com/davidjayjackson/balldontlie_mlb/releases/latest/download/MLB.oxt))
+and install it — no build required:
 
 ```bash
 mkdir -p ~/.config/libreoffice-mlb
 echo 'api.key=your_key' > ~/.config/libreoffice-mlb/balldontlie.properties   # never hardcoded
-"$LO_HOME/program/unopkg" add --force MLB.oxt
+"$LO_HOME/program/unopkg" add MLB.oxt
 ```
 
 See "Provide the balldontlie API key" above for the other resolution
