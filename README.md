@@ -4,6 +4,8 @@
 
 # balldontlie MLB Calc Add-In
 
+[![Release](https://img.shields.io/github/v/release/davidjayjackson/balldontlie_mlb)](https://github.com/davidjayjackson/balldontlie_mlb/releases/latest)
+
 A LibreOffice Calc add-in (UNO component, **Java**, MIT licensed) exposing
 MLB teams, players, games, standings, and player statistics from the
 [balldontlie](https://www.balldontlie.io/) API as worksheet functions.
