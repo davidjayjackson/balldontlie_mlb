@@ -14,7 +14,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Lists MLB teams, optionally filtered by league and/or division, as a spillable array (id, abbreviation, display_name, location, league, division). Enter as an array formula (Ctrl+Shift+Enter) to see all rows.</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBTEAMS</value></prop>
           <node oor:name="Parameters">
             <node oor:name="league" oor:op="replace">
@@ -40,7 +40,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Scalar lookup of one field on one team, by numeric team id. Returns #FETCHING, #NO_API_KEY, or #NOT_FOUND if unresolved.</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBTEAM</value></prop>
           <node oor:name="Parameters">
             <node oor:name="teamId" oor:op="replace">
@@ -66,7 +66,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Searches players by name; returns a spillable array (id, full_name, position, team, active) of up to max_rows matches (default 100). Enter as an array formula.</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBPLAYERSEARCH</value></prop>
           <node oor:name="Parameters">
             <node oor:name="searchText" oor:op="replace">
@@ -92,7 +92,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Scalar lookup of one field on one player, by numeric player id. Returns #FETCHING, #NO_API_KEY, or #NOT_FOUND if unresolved.</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBPLAYER</value></prop>
           <node oor:name="Parameters">
             <node oor:name="playerId" oor:op="replace">
@@ -118,7 +118,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Lists games for a date or a season, optionally filtered to one team, as a spillable array (id, date, away_team_name, away_runs, home_team_name, home_runs, status, season_type). Enter as an array formula.</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBGAMES</value></prop>
           <node oor:name="Parameters">
             <node oor:name="dateOrSeason" oor:op="replace">
@@ -152,7 +152,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Scalar lookup of one field on one game, by numeric game id. Returns #FETCHING, #NO_API_KEY, or #NOT_FOUND if unresolved.</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBGAME</value></prop>
           <node oor:name="Parameters">
             <node oor:name="gameId" oor:op="replace">
@@ -178,7 +178,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Returns league standings for a season as a spillable array (team, league, division, wins, losses, win_percent, games_behind, run_differential). Requires a balldontlie plan above the free tier (returns #TIER otherwise). Enter as an array formula.</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBSTANDINGS</value></prop>
           <node oor:name="Parameters">
             <node oor:name="season" oor:op="replace">
@@ -200,7 +200,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Scalar lookup of one season-stat field for a player (batting_*, pitching_*, fielding_* keys). Requires a balldontlie plan above the free tier (returns #TIER otherwise).</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBSEASONSTATS</value></prop>
           <node oor:name="Parameters">
             <node oor:name="playerId" oor:op="replace">
@@ -230,7 +230,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Scalar lookup of one field from a player's single-game stat line. Requires a balldontlie plan above the free tier (returns #TIER otherwise).</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBSTAT</value></prop>
           <node oor:name="Parameters">
             <node oor:name="playerId" oor:op="replace">
@@ -260,7 +260,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Returns the most recent fetch error message, for diagnostics. Empty string if no error has occurred.</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBLASTERROR</value></prop>
         </node>
 
@@ -270,7 +270,7 @@
           <prop oor:name="Description">
             <value xml:lang="en">Clears every cached response, forcing fresh fetches. Returns the number of cache entries cleared.</value>
           </prop>
-          <prop oor:name="Category"><value>Add-In</value></prop>
+          <prop oor:name="Category"><value>MLB</value></prop>
           <prop oor:name="CompatibilityName"><value xml:lang="en">MLBCACHECLEAR</value></prop>
         </node>
 
