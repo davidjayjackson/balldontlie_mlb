@@ -148,7 +148,7 @@ On the free tier, only `/mlb/v1/teams`, `/mlb/v1/players`, and
 ## Install (prebuilt)
 
 Download `MLB.oxt` from the [latest release](https://github.com/davidjayjackson/balldontlie_mlb/releases/latest)
-(currently [v1.0.0](https://github.com/davidjayjackson/balldontlie_mlb/releases/tag/v1.0.0),
+(currently [v1.1.0](https://github.com/davidjayjackson/balldontlie_mlb/releases/tag/v1.1.0),
 [direct link](https://github.com/davidjayjackson/balldontlie_mlb/releases/latest/download/MLB.oxt))
 and install it — no build required:
 
